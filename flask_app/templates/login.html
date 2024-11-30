@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+<style>
+    .form-container {
+        max-width: 400px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: #ffffff;
+    }
+    .form-container label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        color: #b3b3b3;
+    }
+    .form-container input[type="text"],
+    .form-container input[type="password"] {
+        width: 100%;
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+        background-color: #333;
+        border: 1px solid #555;
+        border-radius: 8px;
+        color: #ffffff;
+    }
+    .form-container input[type="submit"] {
+        width: 100%;
+        padding: 0.8rem;
+        background-color: #00bcd4;
+        border: none;
+        border-radius: 25px;
+        color: #ffffff;
+        cursor: pointer;
+        transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+    .form-container input[type="submit"]:hover {
+        background-color: #008ba3;
+        transform: scale(1.05);
+    }
+    .form-container p {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #b3b3b3;
+    }
+    .form-container a {
+        color: #00bcd4;
+        text-decoration: none;
+    }
+    .form-container a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Log In</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <label for="username_or_email">{{ form.username_or_email.label }}</label>
+        {{ form.username_or_email(size=32) }}
+        {% for error in form.username_or_email.errors %}
+            <span class="error">[{{ error }}]</span>
+        {% endfor %}
+
+        <label for="password">{{ form.password.label }}</label>
+        {{ form.password(size=32) }}
+        {% for error in form.password.errors %}
+            <span class="error">[{{ error }}]</span>
+        {% endfor %}
+
+        <input type="submit" value="Log In">
+    </form>
+    <p>Don't have an account? <a href="{{ url_for('register') }}">Sign Up</a>.</p>
+</div>
+{% endblock %}
