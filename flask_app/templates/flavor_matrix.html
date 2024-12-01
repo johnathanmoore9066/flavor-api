@@ -1,15 +1,17 @@
 {% extends "base.html" %}
+
 {% block title %}Flavor Matrix{% endblock %}
 
 {% block content %}
 <div class="container">
     <h2 class="text-center mb-4">Flavor Matrix</h2>
 
+    <!-- Search Bar -->
     <div class="search-bar text-center mb-4">
-        <input type="text" class="form-control mx-auto" id="searchIngredients" placeholder="Search ingredients...">
+        <input type="text" id="search-input" class="form-control" placeholder="Search ingredients..." onkeyup="filterIngredients()" style="max-width: 300px; margin: 0 auto;">
     </div>
 
-    <div id="ingredients-container" class="row g-4">
+    <div class="row g-4" id="ingredients-container">
         {% for ingredient in ingredients %}
         <div class="col-md-4 ingredient-card-container">
             <div class="card ingredient-card" data-name="{{ ingredient.name }}" onclick="openModal('{{ ingredient.name }}')">
@@ -21,42 +23,34 @@
         </div>
         {% endfor %}
     </div>
+</div>
 
-    <!-- Modal -->
-    <div id="ingredient-modal" class="modal">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 id="modal-ingredient-name" class="ingredient-name"></h4>
-                    <button type="button" class="btn-close" onclick="closeModal()"></button>
-                </div>
-                <div class="modal-body">
-                    <span id="modal-ingredient-type" class="ingredient-type d-block mb-3"></span>
-                    
-                    <div class="flavor-profile-container">
-                        <div class="flavor-profile">
-                            {% for flavor in ['salty', 'sweet', 'sour', 'bitter', 'umami'] %}
-                            <div class="profile-item">
-                                <span class="label">{{ flavor.capitalize() }}</span>
-                                <div class="bar-container">
-                                    <div id="modal-{{ flavor }}-bar" class="bar"></div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="pairings mt-4">
-                        <div class="compatible">
-                            <small>Pairs well with:</small>
-                            <ul id="compatible-list"></ul>
-                        </div>
-                        <div class="ideal mt-3">
-                            <small>Pairs REALLY well with:</small>
-                            <ul id="ideal-list"></ul>
-                        </div>
+<!-- Modal -->
+<div id="ingredient-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <h4 class="ingredient-name" id="modal-ingredient-name"></h4>
+        <span class="ingredient-type" id="modal-ingredient-type"></span>
+        <div class="flavor-profile-container">
+            <div class="flavor-profile">
+                {% for flavor in ['salty', 'sweet', 'sour', 'bitter', 'umami'] %}
+                <div class="profile-item">
+                    <span class="label">{{ flavor.capitalize() }}</span>
+                    <div class="bar-container">
+                        <div class="bar" id="modal-{{ flavor }}-bar"></div>
                     </div>
                 </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="pairings">
+            <div class="compatible">
+                <small>Pairs well with:</small>
+                <ul id="modal-compatible-ingredients"></ul>
+            </div>
+            <div class="ideal">
+                <small>Pairs REALLY well with:</small>
+                <ul id="modal-highly-recommended"></ul>
             </div>
         </div>
     </div>
@@ -65,23 +59,74 @@
 
 {% block scripts %}
 <script>
-function openModal(ingredientName) {
-    const modal = document.getElementById('ingredient-modal');
-    modal.style.display = 'block';
-    // Add your logic to populate modal data here
-}
+    const ingredientsData = {{ ingredients | tojson | safe }};
 
-function closeModal() {
-    const modal = document.getElementById('ingredient-modal');
-    modal.style.display = 'none';
-}
+    function openModal(name) {
+        const ingredient = ingredientsData.find(ing => ing.name === name);
+        if (!ingredient) return;
 
-// Close modal when clicking outside
-window.onclick = function(event) {
-    const modal = document.getElementById('ingredient-modal');
-    if (event.target == modal) {
-        closeModal();
+        // Populate modal content
+        document.getElementById('modal-ingredient-name').textContent = ingredient.name;
+        document.getElementById('modal-ingredient-type').textContent = ingredient.type;
+
+        // Set flavor bars
+        ['salty', 'sweet', 'sour', 'bitter', 'umami'].forEach(flavor => {
+            const bar = document.getElementById(`modal-${flavor}-bar`);
+            bar.style.width = (ingredient[flavor] * 20) + '%';
+        });
+
+        // Populate compatible ingredients
+        const compatibleList = document.getElementById('modal-compatible-ingredients');
+        compatibleList.innerHTML = '';
+        if (ingredient.compatible_ingredients) {
+            ingredient.compatible_ingredients.split(',').forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item.trim();
+                compatibleList.appendChild(li);
+            });
+        }
+
+        // Populate highly recommended ingredients
+        const recommendedList = document.getElementById('modal-highly-recommended');
+        recommendedList.innerHTML = '';
+        if (ingredient.highly_recommended) {
+            ingredient.highly_recommended.split(',').forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item.trim();
+                recommendedList.appendChild(li);
+            });
+        }
+
+        // Show modal
+        document.getElementById('ingredient-modal').style.display = 'block';
     }
-}
+
+    function closeModal() {
+        document.getElementById('ingredient-modal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+        const modal = document.getElementById('ingredient-modal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+
+    function filterIngredients() {
+        const input = document.getElementById('search-input');
+        const filter = input.value.toLowerCase().trim();
+        const containers = document.getElementsByClassName('ingredient-card-container');
+
+        for (let i = 0; i < containers.length; i++) {
+            const card = containers[i].getElementsByClassName('ingredient-card')[0];
+            const name = card.getAttribute('data-name').toLowerCase().trim();
+            if (name.includes(filter)) {
+                containers[i].style.display = '';
+            } else {
+                containers[i].style.display = 'none';
+            }
+        }
+    }
 </script>
 {% endblock %}
