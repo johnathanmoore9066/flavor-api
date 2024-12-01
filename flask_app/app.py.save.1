@@ -13,13 +13,9 @@ from werkzeug.utils import secure_filename
 import logging
 import sys
 
+
 logging.basicConfig(
-        level=logging.DEBUG,
-    format='%(asctime)s %(levelname)s: %(message)s',
-    handlers=[
-        logging.FileHandler('/var/log/flavor-bomb/flask.log'),
-        logging.StreamHandler(sys.stdout)
-    ]
+    
 )
 
 # Add before your first route
@@ -91,13 +87,6 @@ def test():
         'headers': dict(request.headers)
     })
 
-@app.route('/debug')
-def debug():
-    return {
-        'remote_addr': request.remote_addr,
-        'headers': dict(request.headers),
-        'env': dict(request.environ)
-    }
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -122,11 +111,11 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 # Routes
+
 @app.before_request
-def log_request_info():
-    app.logger.debug('Headers: %s', dict(request.headers))
-    app.logger.debug('Remote addr: %s', request.remote_addr)
-    app.logger.debug('URL: %s', request.url)
+def log_request():
+    app.logger.debug(f"Request: {request.method} {request.url}")
+    app.logger.debug(f"Headers: {request.headers}")
 
 @app.route('/')
 def landing():
