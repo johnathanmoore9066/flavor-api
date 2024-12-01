@@ -1,0 +1,8 @@
+[uwsgi]
+module = app:app
+master = true
+processes = 5
+socket = /home/johnathan/flavor-bomb/flavor-api/flask_app/my_flask_app.sock
+chmod-socket = 660
+vacuum = true
+die-on-term = true
