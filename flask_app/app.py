@@ -14,10 +14,10 @@ import logging
 import sys
 
 logging.basicConfig(
-        level=logging.DEBUG,
+    level=logging.DEBUG,
     format='%(asctime)s %(levelname)s: %(message)s',
     handlers=[
-        logging.FileHandler('/var/log/flavor-bomb/flask.log'),
+        logging.FileHandler('flask.log'),  # This will log to the project directory
         logging.StreamHandler(sys.stdout)
     ]
 )
@@ -29,6 +29,7 @@ app.config['MONGO_URI'] = "mongodb+srv://johnathanmoore9067:DDys44ia11@chefai.aq
 app.secret_key = 'your_secret_key'
 mongo = PyMongo(app)
 
+app.config['UPLOAD_FOLDER'] = '/var/www/flavor-bomb/uploads'
 # Flask-Login setup
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
