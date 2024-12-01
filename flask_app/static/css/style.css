@@ -1,8 +1,10 @@
+/* Base styles */
 body {
     background-color: #f8f9fa;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Navbar styles */
 .navbar-brand {
     font-weight: bold;
     font-size: 1.5rem;
@@ -13,121 +15,94 @@ body {
     border-color: #007bff;
 }
 
-.profile-card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Modal styles - consolidated */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px 30px;
     border-radius: 10px;
-}
-
-.profile-picture {
-    border-radius: 50%;
-    max-width: 150px;
-    margin-bottom: 20px;
-}
-
-.flip-card {
-    background-color: transparent;
-    width: 100%;
-    height: 320px;
-    perspective: 1000px;
-    margin-bottom: 20px;
-}
-
-.flip-card-inner {
+    width: 80%;
+    max-width: 600px;
     position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border-radius: 15px;
 }
 
-.flip-card:hover .flip-card-inner {
-    transform: rotateY(180deg);
-}
-
-.flip-card-front, .flip-card-back {
+.close-button {
     position: absolute;
-    width: 100%;
+    top: 15px;
+    right: 25px;
+    color: #aaa;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #000;
+}
+
+/* Ingredient card styles */
+.ingredient-card {
+    cursor: pointer;
+    transition: transform 0.2s;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     height: 100%;
-    backface-visibility: hidden;
-    border-radius: 15px;
 }
 
-.flip-card-front {
-    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+.ingredient-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.flip-card-front .ingredient-name {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #2c3e50;
-}
-
-.flip-card-front .ingredient-type {
-    font-size: 0.9rem;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.flip-card-back {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    color: #2c3e50;
-    transform: rotateY(180deg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-    visibility: hidden;
-}
-
-.flip-card:hover .flip-card-back {
-    visibility: visible;
-}
-
+/* Flavor profile styles */
 .flavor-profile-container {
     width: 90%;
     background-color: white;
     border-radius: 8px;
-    padding: 10px;
+    padding: 15px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .profile-item {
     display: flex;
     align-items: center;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .label {
-    width: 45px;
-    font-size: 0.75rem;
+    width: 60px;
+    font-size: 0.875rem;
     text-align: right;
-    margin-right: 8px;
-    color: #666;
+    margin-right: 10px;
+    color: #495057;
 }
 
 .bar-container {
     flex-grow: 1;
-    background-color: #f0f0f0;
-    height: 6px;
-    border-radius: 3px;
+    background-color: #e9ecef;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .bar {
     height: 100%;
     background: linear-gradient(90deg, #007bff 0%, #00bcd4 100%);
-    border-radius: 3px;
+    border-radius: 4px;
     transition: width 0.3s ease;
 }
 
@@ -147,7 +122,7 @@ body {
 }
 
 .pairings ul {
-    columns: 4; /* Number of columns */
+    columns: 4;
     -webkit-columns: 4;
     -moz-columns: 4;
     column-gap: 20px;
@@ -156,99 +131,34 @@ body {
     margin: 0;
 }
 
-/* style.css */
-
-/* Updated Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    overflow-y: auto;
+/* Search bar styles */
+.search-bar {
+    margin-bottom: 20px;
 }
 
-.modal-dialog {
-    max-width: 500px;
-    margin: 1.75rem auto;
+.search-bar input {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.modal-content {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pairings ul {
+        columns: 2;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+    }
 }
 
-.modal-header {
-    border-bottom: 1px solid #dee2e6;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.modal-body {
-    padding: 1.5rem;
-}
-
-/* Ingredient Card Styles */
-.ingredient-card {
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    height: 100%;
-}
-
-.ingredient-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-/* Flavor Profile Styles */
-.flavor-profile-container {
-    background-color: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 8px;
-}
-
-.profile-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.label {
-    width: 60px;
-    font-size: 0.875rem;
-    color: #495057;
-}
-
-.bar-container {
-    flex-grow: 1;
-    height: 8px;
-    background-color: #e9ecef;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.bar {
-    height: 100%;
-    background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
-    border-radius: 4px;
-    transition: width 0.3s ease;
-}
-
-/* Pairings Lists */
-.pairings ul {
-    columns: 2;
-    column-gap: 2rem;
-    list-style-type: disc;
-    padding-left: 1.5rem;
-}
-
-.pairings ul li {
-    margin-bottom: 0.5rem;
-    break-inside: avoid;
+@media (max-width: 480px) {
+    .pairings ul {
+        columns: 1;
+    }
 }
